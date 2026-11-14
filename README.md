@@ -34,8 +34,8 @@ The script uses an 80:20 random train/test split with a fixed seed and reports t
 
 ## 4. Run in Google Colab (recommended for a Windows PC)
 
-1. Open the notebook: [Run_on_Google_Colab.ipynb](notebooks/Run_on_Google_Colab.ipynb).
-2. Click **Open in Colab** or download the notebook and upload it to https://colab.research.google.com/.
+1. [Open the project notebook directly in Google Colab](https://colab.research.google.com/github/deecares/Smart-Agriculture-Crop-Recommendation/blob/main/notebooks/Run_on_Google_Colab.ipynb). You can also view the [notebook source on GitHub](notebooks/Run_on_Google_Colab.ipynb).
+2. In Colab, run the cells from top to bottom.
 3. Run the cells from top to bottom.
 4. The notebook installs Java and PySpark, downloads the dataset, runs the Spark script and prints model test accuracies.
 5. Record the measured best model and accuracy in your lab submission.
