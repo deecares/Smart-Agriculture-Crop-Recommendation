@@ -1,20 +1,13 @@
-# Dataset instructions
+# Dataset
 
-This project uses the **Crop Wise Area Production Yield (APY)** dataset.
+**District-wise, Season-wise Crop Production Statistics (1997–2015)**
 
-- Dataset page: https://indiadataportal.com/p/area-production-yield-apy
-- Source: Ministry of Agriculture & Farmers Welfare, Government of India
-- Download format: CSV
-- Coverage: 1997–2023
-- Geographic granularity: district level
-- Portal-listed download size: approximately 53.62 MiB
+- Original source: Ministry of Agriculture & Farmers Welfare, Government of India, Directorate of Economics & Statistics.
+- Official resource: https://data.gov.in/resource/district-wise-season-wise-crop-production-statistics-1997
+- Public mirror: https://github.com/JitendraAmbekar/india-crop-production-analysis
+- Expected raw records: approximately 246,091.
+- Columns: State_Name, District_Name, Crop_Year, Season, Crop, Area, Production.
 
-Download the CSV using the **Download Data** option on the dataset page. In Google Colab, the notebook prompts you to upload the downloaded file and saves it as:
+The Colab notebook downloads the CSV as `data/crop_production.csv`. It tries two public raw GitHub mirrors and then offers an upload fallback.
 
-`data/APY.csv`
-
-Expected columns include:
-
-`Year, State Name, State Code, District Name, District Code, Crop Name, Crop Code, Crop Type, Season, Area, Area Unit, Production, Production Unit, Yield, Yield Unit`
-
-Do not upload the raw dataset to this GitHub repository; the Colab notebook accepts it separately.
+Do not commit the raw CSV to this repository. The original government source is cited above; the mirror's byte-identity with the official file has not been independently verified.
