@@ -32,7 +32,21 @@ The Spark MLlib pipeline trains and evaluates:
 
 The script uses an 80:20 random train/test split with a fixed seed and reports test accuracy for each model. **The best model is selected from the actual run output. No accuracy or winning model is claimed in advance.**
 
-## 4. Run in Google Colab (recommended for a Windows PC)
+## 4. Experimental results
+
+Executed successfully in Google Colab using PySpark 3.5.1. The dataset was split into training and test sets using an 80:20 random split with seed 42. Accuracy was measured on the held-out test set.
+
+| Model | Test accuracy |
+|---|---:|
+| Logistic Regression | **98.72%** |
+| Random Forest | 97.18% |
+| Decision Tree | 39.23% |
+
+**Best-performing model in this run:** Logistic Regression (98.72%).
+
+These are the observed results from this particular run and split, not a guarantee of performance on other datasets or splits.
+
+## 5. Run in Google Colab (recommended for a Windows PC)
 
 1. [Open the project notebook directly in Google Colab](https://colab.research.google.com/github/deecares/Smart-Agriculture-Crop-Recommendation/blob/main/notebooks/Run_on_Google_Colab.ipynb). You can also view the [notebook source on GitHub](notebooks/Run_on_Google_Colab.ipynb).
 2. In Colab, run the cells from top to bottom.
