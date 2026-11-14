@@ -13,7 +13,7 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, sum as spark_sum, avg, count, trim, lower
 from pyspark.ml import Pipeline
 from pyspark.ml.feature import StringIndexer, OneHotEncoder, VectorAssembler
-from pyspark.ml.regression import RandomForestRegressor, GBTRegressor
+from pyspark.ml.regression import RandomForestRegressor
 from pyspark.ml.evaluation import RegressionEvaluator
 
 
@@ -105,13 +105,12 @@ def main():
         outputCol="features"
     )
     train, test = df.randomSplit([0.8, 0.2], seed=42)
+    # Use a compact Random Forest configuration for Colab's limited driver memory.
+    # The previous GBT stage exhausted the available Spark/JVM resources.
     models = [
         ("Random Forest Regressor", RandomForestRegressor(
             labelCol="production", featuresCol="features",
-            numTrees=20, maxDepth=8, seed=42)),
-        ("Gradient-Boosted Tree Regressor", GBTRegressor(
-            labelCol="production", featuresCol="features",
-            maxIter=10, maxDepth=4, seed=42))
+            numTrees=10, maxDepth=6, seed=42))
     ]
     rmse_eval = RegressionEvaluator(labelCol="production",
                                     predictionCol="prediction", metricName="rmse")
