@@ -91,8 +91,14 @@ def main():
        .orderBy("year").write.mode("overwrite").option("header", True)
        .csv(args.output + "/yearly_trends"))
 
-    # Estimate production from area and contextual features.
-    categorical = ["state", "district", "season", "crop"]
+    # Train on a bounded sample so the project runs reliably in Colab's
+    # small local Spark memory. All descriptive analytics above still use
+    # the complete cleaned dataset.
+    model_df = df.sample(withReplacement=False, fraction=0.15, seed=42).limit(20000)
+
+    # District is omitted from ML features because its high cardinality creates
+    # a very large one-hot vector. State, season and crop retain useful context.
+    categorical = ["state", "season", "crop"]
     indexers = [StringIndexer(inputCol=c, outputCol=c + "_idx",
                               handleInvalid="keep") for c in categorical]
     encoder = OneHotEncoder(
@@ -104,32 +110,29 @@ def main():
         inputCols=["area", "year"] + [c + "_vec" for c in categorical],
         outputCol="features"
     )
-    train, test = df.randomSplit([0.8, 0.2], seed=42)
-    # Use a compact Random Forest configuration for Colab's limited driver memory.
-    # The previous GBT stage exhausted the available Spark/JVM resources.
-    models = [
-        ("Random Forest Regressor", RandomForestRegressor(
-            labelCol="production", featuresCol="features",
-            numTrees=10, maxDepth=6, seed=42))
-    ]
+    train, test = model_df.randomSplit([0.8, 0.2], seed=42)
+    model = RandomForestRegressor(
+        labelCol="production", featuresCol="features",
+        numTrees=5, maxDepth=4, maxBins=32, seed=42
+    )
     rmse_eval = RegressionEvaluator(labelCol="production",
                                     predictionCol="prediction", metricName="rmse")
     r2_eval = RegressionEvaluator(labelCol="production",
                                   predictionCol="prediction", metricName="r2")
-    metrics = []
-    for name, model in models:
-        pipeline = Pipeline(stages=indexers + [encoder, assembler, model])
-        fitted = pipeline.fit(train)
-        predictions = fitted.transform(test)
-        rmse = float(rmse_eval.evaluate(predictions))
-        r2 = float(r2_eval.evaluate(predictions))
-        metrics.append((name, rmse, r2))
-        print(f"{name}: RMSE={rmse:.4f}, R2={r2:.4f}")
-        if name == "Random Forest Regressor":
-            (predictions.select("year", "state", "district", "season", "crop",
-                                "area", "production", "prediction")
-             .limit(1000).write.mode("overwrite").option("header", True)
-             .csv(args.output + "/sample_predictions"))
+
+    pipeline = Pipeline(stages=indexers + [encoder, assembler, model])
+    fitted = pipeline.fit(train)
+    predictions = fitted.transform(test)
+    rmse = float(rmse_eval.evaluate(predictions))
+    r2 = float(r2_eval.evaluate(predictions))
+    metrics = [("Random Forest Regressor", rmse, r2)]
+    print(f"Random Forest Regressor: RMSE={rmse:.4f}, R2={r2:.4f}")
+    print(f"Model training sample: {model_df.count():,} rows")
+
+    (predictions.select("year", "state", "district", "season", "crop",
+                        "area", "production", "prediction")
+     .limit(1000).write.mode("overwrite").option("header", True)
+     .csv(args.output + "/sample_predictions"))
 
     spark.createDataFrame(metrics, ["model", "rmse", "r2"]) \
         .orderBy(col("rmse").asc()).write.mode("overwrite") \
