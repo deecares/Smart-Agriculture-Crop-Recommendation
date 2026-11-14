@@ -46,29 +46,7 @@ Executed successfully in Google Colab using PySpark 3.5.1. The dataset was split
 
 These are the observed results from this particular run and split, not a guarantee of performance on other datasets or splits.
 
-## 5. Run in Google Colab (recommended for a Windows PC)
-
-1. [Open the project notebook directly in Google Colab](https://colab.research.google.com/github/deecares/Smart-Agriculture-Crop-Recommendation/blob/main/notebooks/Run_on_Google_Colab.ipynb). You can also view the [notebook source on GitHub](notebooks/Run_on_Google_Colab.ipynb).
-2. In Colab, run the cells from top to bottom.
-3. Run the cells from top to bottom.
-4. The notebook installs Java and PySpark, downloads the dataset, runs the Spark script and prints model test accuracies.
-5. Record the measured best model and accuracy in your lab submission.
-
-Google Colab is a convenient cloud notebook environment; it is separate from the college's shared Hadoop server. This project demonstrates Spark MLlib locally within the Colab runtime, not a distributed multi-node Spark cluster.
-
-## 5. Run on a machine that already has Spark
-
-Install dependencies from `requirements.txt`, then run:
-
-```bash
-spark-submit src/crop_recommendation.py \
-  --input data/Crop_recommendation.csv \
-  --output outputs/model_metrics
-```
-
-The CSV must have the eight columns listed above. The output directory contains a CSV folder with model names and measured test accuracies.
-
-## 6. Repository structure
+## 5. Repository structure
 
 ```text
 Smart-Agriculture-Crop-Recommendation/
@@ -82,20 +60,7 @@ Smart-Agriculture-Crop-Recommendation/
     └── crop_recommendation.py
 ```
 
-## 7. Submission details
 
-| Submission field | Project detail |
-|---|---|
-| Selected ML problem type | Classification |
-| BDA project details | Apache Spark (PySpark / Spark MLlib) |
-| Dataset name | Crop Recommendation Dataset |
-| Dataset source platform | Kaggle |
-| Dataset URL | https://www.kaggle.com/datasets/atharvaingle/crop-recommendation-dataset |
-| ML models used | Decision Tree, Random Forest, Logistic Regression |
-| Best-performing model | Fill in after running the notebook and comparing test accuracy |
-| GitHub source code | https://github.com/deecares/Smart-Agriculture-Crop-Recommendation |
-| LinkedIn post | Add after publishing a project post |
-
-## 8. Scope and limitations
+## 6. Scope and limitations
 
 This is an educational crop classification demonstration based on the public dataset. Model predictions should not be treated as professional agronomic advice. Real deployment would need locally validated soil tests, regional and seasonal information, current weather, and guidance from agricultural experts.
