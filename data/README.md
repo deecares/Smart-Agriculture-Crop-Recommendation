@@ -1,17 +1,20 @@
 # Dataset instructions
 
-Download **Crop Recommendation Dataset** from the original Kaggle page:
+This project uses the **Crop Wise Area Production Yield (APY)** dataset.
 
-https://www.kaggle.com/datasets/atharvaingle/crop-recommendation-dataset
+- Dataset page: https://indiadataportal.com/p/area-production-yield-apy
+- Source: Ministry of Agriculture & Farmers Welfare, Government of India
+- Download format: CSV
+- Coverage: 1997–2023
+- Geographic granularity: district level
+- Portal-listed download size: approximately 53.62 MiB
 
-The downloaded CSV should be named:
+Download the CSV using the **Download Data** option on the dataset page. In Google Colab, the notebook prompts you to upload the downloaded file and saves it as:
 
-`Crop_recommendation.csv`
+`data/APY.csv`
 
-Expected columns:
+Expected columns include:
 
-`N, P, K, temperature, humidity, ph, rainfall, label`
+`Year, State Name, State Code, District Name, District Code, Crop Name, Crop Code, Crop Type, Season, Area, Area Unit, Production, Production Unit, Yield, Yield Unit`
 
-Place the CSV in this `data/` directory when running the script locally.
-
-For the Google Colab notebook, the CSV is downloaded into this directory from a public GitHub mirror of the dataset so that Kaggle login is not required for the classroom demonstration. The original dataset is credited to Atharva Ingle on Kaggle.
+Do not upload the raw dataset to this GitHub repository; the Colab notebook accepts it separately.
