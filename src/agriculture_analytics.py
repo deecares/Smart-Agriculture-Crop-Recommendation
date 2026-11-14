@@ -40,7 +40,9 @@ def main():
         raise ValueError("CSV is missing expected columns: " + ", ".join(missing))
 
     df = raw.select(
-        *[trim(col(src).cast("string")).alias(dst)
+        *[(col(src).cast("int").alias(dst)
+           if dst == "year"
+           else trim(col(src).cast("string")).alias(dst))
           for src, dst in aliases.items()
           if dst not in ("area", "production")],
         col("Area").cast("double").alias("area"),
